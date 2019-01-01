@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Baking App</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="servings_Text">Servings</string>
+    <string name="servings_times">12</string>
+    <string name="internet_successfully_connected">Internet Successfully Connected</string>
+    <string name="check_Internet_connection">Check Internet Connection</string>
+    <string name="retry">Retry</string>
+    <string name="recipes">Recipes</string>
+    <string name="recipe_details">Recipe Details</string>
+    <string name="ingredient_quantity">15</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="ingredients">INGREDIENTS</string>
+    <string name="videos">VIDEOS</string>
+    <string name="ingredient_measure">gm</string>
+    <string name="step_number">3</string>
+    <string name="slash">/</string>
+    <string name="total_steps">8</string>
+
+    <!-- Content Description-->
+    <string name="recipe_image">recipe_image</string>
+    <string name="next_video">next_video</string>
+    <string name="previous_video">previous_video</string>
+    <string name="image_no_video">image_no_video</string>
+
+    <!-- Lorem ipsum-->
+    <string name="short_description">Lorem ipsum dolor sit amet.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="back_image">back image</string>
+
+</resources>
