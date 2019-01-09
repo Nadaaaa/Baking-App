@@ -24,7 +24,7 @@ public class RecipeDetailsFragment extends Fragment {
     public static RecipeDetailsFragment newInstance(Recipe recipes) {
         RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
         Bundle recipeDetailsBundle = new Bundle();
-        recipeDetailsBundle.putSerializable(RECIPE_KEY, recipes);
+        recipeDetailsBundle.putParcelable(RECIPE_KEY, recipes);
         recipeDetailsFragment.setArguments(recipeDetailsBundle);
         return recipeDetailsFragment;
     }
@@ -37,7 +37,7 @@ public class RecipeDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
 
-        mRecipe = (Recipe) getArguments().getSerializable(RECIPE_KEY);
+        mRecipe = (Recipe) getArguments().getParcelable(RECIPE_KEY);
 
         IngredientsFragment ingredientsFragment = IngredientsFragment.newInstance(mRecipe);
         MasterListFragment masterListFragment = MasterListFragment.newInstance(mRecipe);

@@ -52,8 +52,8 @@ public class VideosNavigationFragment extends Fragment {
     public static VideosNavigationFragment newInstance(Recipe recipe, int clickedItemIndex) {
         VideosNavigationFragment videosNavigationFragment = new VideosNavigationFragment();
         Bundle videoBundle = new Bundle();
-        videoBundle.putSerializable(RECIPE_KEY, recipe);
-        videoBundle.putSerializable(VIDEO_KEY, clickedItemIndex);
+        videoBundle.putParcelable(RECIPE_KEY, recipe);
+        videoBundle.putInt(VIDEO_KEY, clickedItemIndex);
         videosNavigationFragment.setArguments(videoBundle);
         return videosNavigationFragment;
     }
@@ -67,8 +67,8 @@ public class VideosNavigationFragment extends Fragment {
 
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        mRecipe = (Recipe) getArguments().getSerializable(RECIPE_KEY);
-        clickedItemIndex = (int) getArguments().getSerializable(VIDEO_KEY);
+        mRecipe = getArguments().getParcelable(RECIPE_KEY);
+        clickedItemIndex = getArguments().getInt(VIDEO_KEY);
         videosListLength = mRecipe.getSteps().size();
 
         if (clickedItemIndex == 0) {
@@ -88,7 +88,7 @@ public class VideosNavigationFragment extends Fragment {
         VideoDetailsFragment videoDetailsFragment = VideoDetailsFragment.newInstance(currentVideo);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.video_details_fragment, videoDetailsFragment)
+                .replace(R.id.video_details_frameLayout, videoDetailsFragment)
                 .commit();
 
         return rootView;
@@ -116,7 +116,7 @@ public class VideosNavigationFragment extends Fragment {
             VideoDetailsFragment videoDetailsFragment = VideoDetailsFragment.newInstance(nextVideo);
 
             fragmentManager.beginTransaction()
-                    .replace(R.id.video_details_fragment, videoDetailsFragment)
+                    .replace(R.id.video_details_frameLayout, videoDetailsFragment)
                     .commit();
         }
     }
@@ -144,7 +144,7 @@ public class VideosNavigationFragment extends Fragment {
             VideoDetailsFragment videoDetailsFragment = VideoDetailsFragment.newInstance(previousVideo);
 
             fragmentManager.beginTransaction()
-                    .replace(R.id.video_details_fragment, videoDetailsFragment)
+                    .replace(R.id.video_details_frameLayout, videoDetailsFragment)
                     .commit();
         }
     }

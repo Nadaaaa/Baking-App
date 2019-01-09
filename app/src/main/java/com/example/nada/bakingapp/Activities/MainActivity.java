@@ -2,6 +2,7 @@ package com.example.nada.bakingapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.nada.bakingapp.Utils.Utils;
+import com.example.nada.bakingapp.Widgets.WidgetUpdateService;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import com.example.nada.bakingapp.Adapters.RecipesAdapter;
@@ -22,6 +25,7 @@ import com.example.nada.bakingapp.Models.Recipe;
 import com.example.nada.bakingapp.NetwokUtils.Retrofit;
 import com.example.nada.bakingapp.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Li
 
     //Vars
     private RecipesAdapter mRecipesAdapter;
-    private List<Recipe> tempRecipesList;
+    private static List<Recipe> tempRecipesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Li
     public void onListItemClicked(int clickedItemIndex) {
         Gson gson = new Gson();
         String recipe = gson.toJson(tempRecipesList.get(clickedItemIndex));
+
+        createSampleDataForWidget(getApplicationContext(), tempRecipesList.get(clickedItemIndex));
+        WidgetUpdateService.startActionUpdateAppWidgets(getApplicationContext(), true);
+
         startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class).putExtra(RECIPE_KEY, recipe));
     }
 
@@ -135,4 +143,23 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Li
                 .show();
     }
 
+    public static void createSampleDataForWidget(Context context, Recipe recipe) {
+        SharedPreferences sharedPref = context.getSharedPreferences("RecipeData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recipe);
+        prefsEditor.putString("recipe", json);
+        prefsEditor.apply();
+    }
+
+    public static Recipe getDataFromSharedPrefs(Context context) {
+        Recipe recipe;
+        SharedPreferences mPrefs = context.getSharedPreferences("RecipeData", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("recipe", "");
+        Type type = new TypeToken<Recipe>() {
+        }.getType();
+        recipe = gson.fromJson(json, type);
+        return recipe;
+    }
 }

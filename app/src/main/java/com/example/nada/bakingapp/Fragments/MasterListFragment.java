@@ -42,7 +42,7 @@ public class MasterListFragment extends Fragment implements VideosAdapter.ListIt
     public static MasterListFragment newInstance(Recipe recipes) {
         MasterListFragment masterListFragment = new MasterListFragment();
         Bundle masterListBundle = new Bundle();
-        masterListBundle.putSerializable(RECIPE_KEY, recipes);
+        masterListBundle.putParcelable(RECIPE_KEY, recipes);
         masterListFragment.setArguments(masterListBundle);
         return masterListFragment;
     }
@@ -58,7 +58,7 @@ public class MasterListFragment extends Fragment implements VideosAdapter.ListIt
 
         ButterKnife.bind(this, rootView);
 
-        mRecipe = (Recipe) getArguments().getSerializable(RECIPE_KEY);
+        mRecipe = (Recipe) getArguments().getParcelable(RECIPE_KEY);
 
         tempStepsList = new ArrayList<>();
         tempStepsList.addAll(mRecipe.getSteps());

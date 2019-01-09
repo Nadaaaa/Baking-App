@@ -26,6 +26,29 @@
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation"
             android:parentActivityName=".Activities.MainActivity" />
+
+        <receiver android:name=".Widgets.IngredientWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredient_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".Widgets.WidgetUpdateService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="update_app_widget" />
+                <action android:name="update_app_widget_list" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Widgets.ListViewWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

@@ -73,7 +73,7 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     public static VideoDetailsFragment newInstance(Step step) {
         VideoDetailsFragment videoDetailsFragment = new VideoDetailsFragment();
         Bundle videoDetailsBundle = new Bundle();
-        videoDetailsBundle.putSerializable(VIDEO_KEY, step);
+        videoDetailsBundle.putParcelable(VIDEO_KEY, step);
         videoDetailsFragment.setArguments(videoDetailsBundle);
         return videoDetailsFragment;
     }
@@ -85,7 +85,7 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
 
         ButterKnife.bind(this, rootView);
 
-        mStep = (Step) getArguments().getSerializable(VIDEO_KEY);
+        mStep = (Step) getArguments().getParcelable(VIDEO_KEY);
 
         initializeMediaSession();
         if (!mStep.getVideoURL().isEmpty()) {
@@ -131,6 +131,44 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
 
         mediaSession.setCallback(new MediaSessionCallbacks());
         mediaSession.setActive(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initializeMediaSession();
+        if (Util.SDK_INT <= 23 || simpleExoPlayer == null) {
+            if (!mStep.getVideoURL().isEmpty()) {
+                setPlayerAndLoadingIndicatorSize();
+                initializePlayer(Uri.parse(mStep.getVideoURL()));
+            } else {
+                if (!mStep.getThumbnailURL().isEmpty()) {
+                    setPlayerAndLoadingIndicatorSize();
+                    initializePlayer(Uri.parse(mStep.getThumbnailURL()));
+                } else {
+                    videoLayout.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeMediaSession();
+        if (Util.SDK_INT <= 23 || simpleExoPlayer == null) {
+            if (!mStep.getVideoURL().isEmpty()) {
+                setPlayerAndLoadingIndicatorSize();
+                initializePlayer(Uri.parse(mStep.getVideoURL()));
+            } else {
+                if (!mStep.getThumbnailURL().isEmpty()) {
+                    setPlayerAndLoadingIndicatorSize();
+                    initializePlayer(Uri.parse(mStep.getThumbnailURL()));
+                } else {
+                    videoLayout.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     private void initializePlayer(Uri videoUrl) {
@@ -193,6 +231,9 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     @Override
     public void onPause() {
         super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
         if (simpleExoPlayer != null) {
             currentPlayerPosition = simpleExoPlayer.getCurrentPosition();
         }
@@ -202,7 +243,6 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     public void onDestroy() {
         super.onDestroy();
         deactivateMediaSession();
-        releasePlayer();
     }
 
     private void deactivateMediaSession() {

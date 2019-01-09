@@ -43,7 +43,7 @@ public class IngredientsFragment extends Fragment {
     public static IngredientsFragment newInstance(Recipe recipes) {
         IngredientsFragment ingredientsFragment = new IngredientsFragment();
         Bundle ingredientBundle = new Bundle();
-        ingredientBundle.putSerializable(RECIPE_KEY, recipes);
+        ingredientBundle.putParcelable(RECIPE_KEY, recipes);
         ingredientsFragment.setArguments(ingredientBundle);
         return ingredientsFragment;
     }
@@ -56,7 +56,7 @@ public class IngredientsFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        mRecipe = (Recipe) getArguments().getSerializable(RECIPE_KEY);
+        mRecipe = (Recipe) getArguments().getParcelable(RECIPE_KEY);
 
         tempIngredientsList = new ArrayList<>();
         tempIngredientsList.addAll(mRecipe.getIngredients());
