@@ -1,9 +1,9 @@
 package com.example.nada.bakingapp.Activities;
 
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.nada.bakingapp.Fragments.RecipeDetailsFragment;
@@ -11,7 +11,6 @@ import com.example.nada.bakingapp.Fragments.VideoDetailsFragment;
 import com.example.nada.bakingapp.Fragments.VideosNavigationFragment;
 import com.example.nada.bakingapp.Models.Recipe;
 import com.example.nada.bakingapp.R;
-
 import com.example.nada.bakingapp.Utils.Utils;
 import com.google.gson.Gson;
 
@@ -31,25 +30,26 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     //Vars
     private Recipe mRecipe;
+    private RecipeDetailsFragment recipeDetailsFragment;
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
-
         ButterKnife.bind(this);
-
         Gson gson = new Gson();
         mRecipe = gson.fromJson(getIntent().getStringExtra(RECIPE_KEY), Recipe.class);
-
-        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(mRecipe);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        recipeDetailsFragment = RecipeDetailsFragment.newInstance(mRecipe);
 
         if (!Utils.isTablet(this)) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.recipe_details_fragment, recipeDetailsFragment)
-                    .commit();
+            boolean fragmentPopped = fragmentManager.popBackStackImmediate(RecipeDetailsFragment.class.getName(), 0);
+            if(!fragmentPopped) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.recipe_details_fragment, recipeDetailsFragment)
+                        .addToBackStack(RecipeDetailsFragment.class.getName())
+                        .commit();
+            }
         } else {
             fragmentManager.beginTransaction()
                     .replace(R.id.tablet_recipe_details_fragment, recipeDetailsFragment)
@@ -71,6 +71,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        VideosNavigationFragment.instance=null;
+        VideoDetailsFragment.instance=null;
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
         } else {

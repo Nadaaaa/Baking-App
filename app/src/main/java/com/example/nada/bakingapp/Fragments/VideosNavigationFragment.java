@@ -44,10 +44,13 @@ public class VideosNavigationFragment extends Fragment {
     private static int clickedItemIndex;
     private int videosListLength;
     private FragmentManager fragmentManager;
+    public static VideosNavigationFragment instance;
+    private VideoDetailsFragment videoDetailsFragment;
 
     public VideosNavigationFragment() {
 
     }
+
 
     public static VideosNavigationFragment newInstance(Recipe recipe, int clickedItemIndex) {
         VideosNavigationFragment videosNavigationFragment = new VideosNavigationFragment();
@@ -62,10 +65,10 @@ public class VideosNavigationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_videos_navigation, container, false);
-
+        instance = this;
         ButterKnife.bind(this, rootView);
 
-        fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager = getChildFragmentManager();
 
         mRecipe = getArguments().getParcelable(RECIPE_KEY);
         clickedItemIndex = getArguments().getInt(VIDEO_KEY);
@@ -85,14 +88,18 @@ public class VideosNavigationFragment extends Fragment {
         textView_stepNumber.setText(String.valueOf(currentVideo.getId()));
         textView_totalSteps.setText(String.valueOf(videosListLength - 1));
 
-        VideoDetailsFragment videoDetailsFragment = VideoDetailsFragment.newInstance(currentVideo);
+        if(VideoDetailsFragment.getInstance()==null)
+            videoDetailsFragment = VideoDetailsFragment.newInstance(currentVideo);
+        else
+            videoDetailsFragment = VideoDetailsFragment.getInstance();
 
         fragmentManager.beginTransaction()
                 .replace(R.id.video_details_frameLayout, videoDetailsFragment)
                 .commit();
-
         return rootView;
     }
+
+
 
     @OnClick(R.id.imageView_nextVideo)
     public void onClickImageViewNextVideo() {
@@ -149,4 +156,7 @@ public class VideosNavigationFragment extends Fragment {
         }
     }
 
+    public static VideosNavigationFragment getInstance() {
+        return instance;
+    }
 }

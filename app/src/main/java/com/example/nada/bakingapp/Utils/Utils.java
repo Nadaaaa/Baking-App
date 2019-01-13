@@ -9,6 +9,8 @@ import com.example.nada.bakingapp.R;
 
 public class Utils {
 
+    public static boolean isInVideoFragment = false;
+
     public static boolean isConnectedToInternet(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -16,7 +18,7 @@ public class Utils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static boolean isTablet(Context context){
+    public static boolean isTablet(Context context) {
         return context.getResources().getBoolean(R.bool.is_tablet);
     }
 }

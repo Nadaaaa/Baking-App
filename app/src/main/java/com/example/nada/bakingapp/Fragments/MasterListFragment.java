@@ -77,7 +77,6 @@ public class MasterListFragment extends Fragment implements VideosAdapter.ListIt
 
         if (!Utils.isTablet(getContext())) {
             VideosNavigationFragment videosNavigationFragment = VideosNavigationFragment.newInstance(mRecipe, clickedItemIndex);
-
             fragmentManager.beginTransaction()
                     .replace(R.id.recipe_details_fragment, videosNavigationFragment)
                     .addToBackStack(RecipeDetailsActivity.TAG)

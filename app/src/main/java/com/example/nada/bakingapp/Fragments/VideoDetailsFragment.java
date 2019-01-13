@@ -65,10 +65,16 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     private PlaybackStateCompat.Builder playbackStateBuilder;
     private boolean isPlaying = true;
     private long currentPlayerPosition = 0;
-
+    public static VideoDetailsFragment instance;
     public VideoDetailsFragment() {
 
     }
+
+    public static VideoDetailsFragment getInstance() {
+        return instance;
+    }
+
+
 
     public static VideoDetailsFragment newInstance(Step step) {
         VideoDetailsFragment videoDetailsFragment = new VideoDetailsFragment();
@@ -82,9 +88,8 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_video_details, container, false);
-
         ButterKnife.bind(this, rootView);
-
+        instance =this;
         mStep = (Step) getArguments().getParcelable(VIDEO_KEY);
 
         initializeMediaSession();
@@ -231,12 +236,14 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+       /* if (Util.SDK_INT <= 23) {
             releasePlayer();
-        }
+        }*/
         if (simpleExoPlayer != null) {
             currentPlayerPosition = simpleExoPlayer.getCurrentPosition();
         }
+        releasePlayer();
+
     }
 
     @Override

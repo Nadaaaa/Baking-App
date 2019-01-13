@@ -3,10 +3,10 @@ package com.example.nada.bakingapp.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,16 +14,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.nada.bakingapp.Adapters.RecipesAdapter;
+import com.example.nada.bakingapp.Models.Recipe;
+import com.example.nada.bakingapp.NetwokUtils.Retrofit;
+import com.example.nada.bakingapp.R;
 import com.example.nada.bakingapp.Utils.Utils;
 import com.example.nada.bakingapp.Widgets.WidgetUpdateService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.wang.avi.AVLoadingIndicatorView;
-
-import com.example.nada.bakingapp.Adapters.RecipesAdapter;
-import com.example.nada.bakingapp.Models.Recipe;
-import com.example.nada.bakingapp.NetwokUtils.Retrofit;
-import com.example.nada.bakingapp.R;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -39,18 +39,25 @@ public class RecipeDetailsFragment extends Fragment {
 
         mRecipe = (Recipe) getArguments().getParcelable(RECIPE_KEY);
 
-        IngredientsFragment ingredientsFragment = IngredientsFragment.newInstance(mRecipe);
-        MasterListFragment masterListFragment = MasterListFragment.newInstance(mRecipe);
+        if(VideosNavigationFragment.getInstance()==null) {
+            IngredientsFragment ingredientsFragment = IngredientsFragment.newInstance(mRecipe);
+            MasterListFragment masterListFragment = MasterListFragment.newInstance(mRecipe);
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = getChildFragmentManager();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.ingredients_fragment, ingredientsFragment)
-                .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.ingredients_fragment, ingredientsFragment)
+                    .commit();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.master_list_fragment, masterListFragment)
-                .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.master_list_fragment, masterListFragment)
+                    .commit();
+        }else {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.recipe_details_fragment, VideosNavigationFragment.getInstance())
+                    .commit();
+        }
+
         return rootView;
     }
 }
