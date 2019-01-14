@@ -27,14 +27,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityAdapterTest {
 
-    /*@Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
-    @Test
-    public void adapterScroll() {
-        onView(withId(R.id.rv_recipes)).perform(scrollToPosition(3));
-    }*/
-
     private static final String RECIPE_ITEM = "Yellow Cake";
 
     @Rule

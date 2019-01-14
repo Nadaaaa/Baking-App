@@ -42,6 +42,8 @@ import com.google.android.exoplayer2.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.nada.bakingapp.Utils.Constants.PLAY_WHEN_READY_KEY;
+import static com.example.nada.bakingapp.Utils.Constants.POSITION_PLAYER_KEY;
 import static com.example.nada.bakingapp.Utils.Constants.VIDEO_KEY;
 
 public class VideoDetailsFragment extends Fragment implements Player.EventListener {
@@ -66,6 +68,7 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     private boolean isPlaying = true;
     private long currentPlayerPosition = 0;
     public static VideoDetailsFragment instance;
+
     public VideoDetailsFragment() {
 
     }
@@ -73,7 +76,6 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     public static VideoDetailsFragment getInstance() {
         return instance;
     }
-
 
 
     public static VideoDetailsFragment newInstance(Step step) {
@@ -89,7 +91,7 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_video_details, container, false);
         ButterKnife.bind(this, rootView);
-        instance =this;
+        instance = this;
         mStep = (Step) getArguments().getParcelable(VIDEO_KEY);
 
         initializeMediaSession();
@@ -104,10 +106,21 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
                 videoLayout.setVisibility(View.GONE);
             }
         }
+        if (savedInstanceState != null) {
+            currentPlayerPosition = savedInstanceState.getLong(POSITION_PLAYER_KEY);
+            isPlaying = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
+        }
 
         textView_videoDescription.setText(mStep.getDescription());
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(POSITION_PLAYER_KEY, currentPlayerPosition);
+        outState.putBoolean(PLAY_WHEN_READY_KEY, isPlaying);
     }
 
     private void setPlayerAndLoadingIndicatorSize() {
@@ -236,14 +249,10 @@ public class VideoDetailsFragment extends Fragment implements Player.EventListen
     @Override
     public void onPause() {
         super.onPause();
-       /* if (Util.SDK_INT <= 23) {
-            releasePlayer();
-        }*/
         if (simpleExoPlayer != null) {
             currentPlayerPosition = simpleExoPlayer.getCurrentPosition();
         }
         releasePlayer();
-
     }
 
     @Override
